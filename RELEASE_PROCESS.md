@@ -1,5 +1,14 @@
 # WhozWho Client Release Process
 
+⚠️ IMPORTANT: DO NOT PUSH ANY CHANGES OR TAGS UNTIL EXPLICITLY ASKED TO "RELEASE"
+This includes:
+- No git push
+- No git push --tags
+- No npm publish
+- No manual releases
+
+Wait for the explicit "release" command before pushing anything.
+
 ## Prerequisites
 - Make sure you have all dependencies installed
   ```bash
@@ -67,28 +76,33 @@
    git tag -a v<version> -m "Release v<version>"
    ```
 
-5. Push to Repository
+5. Wait for Release Command
+   ⚠️ STOP HERE and wait for explicit "release" command
+
+6. Push to Repository (ONLY after "release" command)
    ```bash
    git push origin main --tags
    ```
 
-6. Publish to npm
-   ```bash
-   npm publish
-   ```
+Note: Package publishing to npm is handled automatically by CI when a new tag is pushed.
 
 ## Post-release
-1. Verify Package
+1. Monitor CI/CD Pipeline
+   - Check that the release workflow completes successfully
+   - Verify npm package is published by CI
+   - Monitor for any deployment issues
+
+2. Verify Package (after CI completes)
    - Check npm package page
    - Verify installation in new project
    - Test basic functionality
 
-2. Update Documentation
+3. Update Documentation
    - Mark version as released in CHANGELOG.md
    - Update documentation site if applicable
    - Update any version-specific docs
 
-3. Notify
+4. Notify
    - Create GitHub release notes
    - Update release status in project management tools
    - Notify team/users if needed

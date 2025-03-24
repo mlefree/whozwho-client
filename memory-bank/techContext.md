@@ -25,6 +25,28 @@
    - `npm run lint`: Check code style
    - `npm run format`: Format code
 
+## Release Process
+1. Pre-release Commands:
+   ```bash
+   npm install        # Ensure dependencies
+   npm run lint      # Code quality
+   npm run format    # Code formatting
+   npm run test      # Run tests
+   npm run build     # Build package
+   ```
+
+2. Version Management:
+   ```bash
+   npm version <major|minor|patch>
+   git tag -a v<version> -m "Release v<version>"
+   ```
+
+3. CI/CD Integration:
+   - Automated on tag push
+   - Handles npm publishing
+   - Runs quality checks
+   - Generates documentation
+
 ## Technical Dependencies
 1. Runtime:
    - axios: HTTP client

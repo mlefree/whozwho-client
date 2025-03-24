@@ -26,6 +26,26 @@
    - Jest: Testing framework
    - ESLint/Prettier: Code quality
 
+## Release Process
+1. Key Rules:
+   - No pushes until "release" command
+   - CI handles npm publishing
+   - Version follows SemVer
+
+2. Release Flow:
+   - Prerequisites check
+   - Quality checks
+   - Version update
+   - Documentation update
+   - Wait for release command
+   - CI/CD deployment
+
+3. Branch Strategy:
+   - Main: Production code
+   - Develop: Next release
+   - Feature branches
+   - Hotfix branches
+
 ## Key Technical Decisions
 1. Static Class API:
    - Easier to use

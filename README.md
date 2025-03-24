@@ -1,49 +1,73 @@
-# WhozWho Client
+# 🌟 WhozWho Client
 
-A TypeScript client library for interacting with the WhozWho service.
+<div align="center">
 
-## Installation
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-blue.svg)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18.x-green.svg)](https://nodejs.org/)
+[![Axios](https://img.shields.io/badge/Axios-1.6.7-purple.svg)](https://axios-http.com/)
+[![Jest](https://img.shields.io/badge/Jest-29.7.0-red.svg)](https://jestjs.io/)
+[![License](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
-```bash
-npm install whozwho-client
-```
+A powerful, type-safe client for WhozWho services with seamless integration and robust error handling.
 
-## Usage
+[Getting Started](#🚀-getting-started) •
+[Features](#✨-features) •
+[Installation](#📦-installation) •
+[Usage](#💡-usage) •
+[API](#📚-api) •
+[Contributing](#🤝-contributing)
 
-```typescript
-import { Whozwho, AdviceType } from 'whozwho-client';
+</div>
 
-// Check if the client is principal
-const isPrincipal = await Whozwho.IsPrincipal();
+## 🚀 Getting Started
 
-// Get advices
-const advices = await Whozwho.GetAdvices();
-
-// Post a new advice
-const newAdvice = await Whozwho.PostAdvice(AdviceType.UPDATE);
-
-// Mark an advice as ongoing
-if (newAdvice) {
-  await Whozwho.MentionThatAdviceIsOnGoing(newAdvice);
-}
-```
-
-## Configuration
-
-The client requires configuration for:
-- WhozWho service URL
-- Category and ID for identification
-- Weight and alive period settings
-- Optional mocking flag for testing
-
-Example configuration:
+WhozWho Client provides a seamless interface to interact with WhozWho services. Built with TypeScript for type safety and modern JavaScript features for developer productivity.
 
 ```typescript
-const config = {
+import { Whozwho } from 'whozwho-client';
+
+const client = new Whozwho({
   whozwho: {
     url: 'https://your-whozwho-service.com',
     category: 'your-category',
-    id: 'your-id',
+    id: 'your-id'
+  }
+});
+
+// Check if user is principal
+const isPrincipal = await client.isPrincipal();
+console.log('Is Principal:', isPrincipal);
+```
+
+## ✨ Features
+
+- 🔒 **Type-Safe**: Full TypeScript support with comprehensive type definitions
+- 🚦 **Smart Error Handling**: Robust error management and logging
+- 🔄 **Health Checks**: Automated service health monitoring
+- 🎯 **Advice Management**: Easy handling of service advices
+- 🔌 **Mock Mode**: Built-in mock mode for testing
+- 📝 **Extensive Logging**: Detailed logging for debugging
+
+## 📦 Installation
+
+```bash
+npm install whozwho-client
+# or
+yarn add whozwho-client
+```
+
+## 💡 Usage
+
+### Basic Configuration
+
+```typescript
+import { Whozwho } from 'whozwho-client';
+
+const client = new Whozwho({
+  whozwho: {
+    url: 'https://api.whozwho.com',
+    category: 'my-service',
+    id: 'service-id',
     weight: 1,
     alivePeriodInSec: 60,
     mocked: false
@@ -51,69 +75,90 @@ const config = {
   deploy: {
     version: '1.0.0'
   }
-};
+});
 ```
 
-## API Reference
-
-### Whozwho Class
-
-#### Static Methods
-
-- `IsPrincipal(): Promise<boolean>`
-  - Checks if the client has the principal role for its category
-  
-- `GetAdvices(): Promise<Advice[]>`
-  - Retrieves a list of advices from the service
-  
-- `PostAdvice(adviceType: AdviceType): Promise<Advice | null>`
-  - Creates a new advice
-  
-- `MentionThatAdviceIsOnGoing(advice: Advice): Promise<void>`
-  - Updates an advice status to ongoing
-
-### Types
+### Managing Advices
 
 ```typescript
-enum AdviceType {
-  UPDATE = 'you need an update'
-}
+// Get all advices
+const advices = await client.getAdvices();
 
-class Advice {
-  constructor(
-    public id: string,
-    public type: AdviceType
-  ) {}
+// Post new advice
+const newAdvice = await client.postAdvice(AdviceType.UPDATE);
+
+// Mark advice as ongoing
+await client.mentionThatAdviceIsOnGoing(advice);
+```
+
+### Principal Role Verification
+
+```typescript
+const isPrincipal = await client.isPrincipal();
+if (isPrincipal) {
+  console.log('This instance is the principal!');
 }
 ```
 
-## Development
+## 📚 API
 
-```bash
-# Install dependencies
-npm install
+### `Whozwho`
 
-# Build
-npm run build
+Main client class for interacting with WhozWho services.
 
-# Run tests
-npm test
+#### Methods
 
-# Lint
-npm run lint
+- `getAdvices()`: Fetch all available advices
+- `postAdvice(type: AdviceType)`: Create a new advice
+- `mentionThatAdviceIsOnGoing(advice: Advice)`: Update advice status
+- `isPrincipal()`: Check if current instance is principal
 
-# Format code
-npm run format
+### `Advice`
+
+Data model for WhozWho advices.
+
+```typescript
+interface Advice {
+  id: string;
+  type: AdviceType;
+}
 ```
 
-## Contributing
+## 🔧 Configuration
+
+| Option | Type | Description |
+|--------|------|-------------|
+| url | string | WhozWho service URL |
+| category | string | Service category |
+| id | string | Service identifier |
+| weight | number | Instance weight |
+| alivePeriodInSec | number | Health check interval |
+| mocked | boolean | Enable mock mode |
+
+## 🤝 Contributing
+
+We welcome contributions! Follow these steps:
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
 5. Open a Pull Request
 
-## License
+## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with TypeScript
+- Powered by Axios
+- Tested with Jest
+
+---
+
+<div align="center">
+
+Made with ❤️ by mlefree
+
+</div> 
