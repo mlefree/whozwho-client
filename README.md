@@ -8,7 +8,7 @@
 [![Jest](https://img.shields.io/badge/Jest-29.7.0-red.svg)](https://jestjs.io/)
 [![License](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
-A powerful, type-safe client for WhozWho services with seamless integration and robust error handling.
+A powerful, type-safe client for [WhozWho](https://github.com/mlefree/whozwho) services with seamless integration and robust error handling.
 
 [Getting Started](#🚀-getting-started) •
 [Features](#✨-features) •
