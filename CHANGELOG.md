@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ESLint 8.57.0 for linting
 - Prettier 3.2.5 for code formatting
 
-## [0.1.0] - 2024-03-24
+## [0.1.0] - 2025-03-24
 Initial release 🎉
 
 [Unreleased]: https://github.com/username/whozwho-client/compare/v0.1.0...HEAD

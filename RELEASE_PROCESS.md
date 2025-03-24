@@ -1,5 +1,20 @@
 # WhozWho Client Release Process
 
+## Prerequisites
+- Make sure you have all dependencies installed
+  ```bash
+  npm install
+  ```
+- Ensure you're starting from an up-to-date master branch
+  ```bash
+  git checkout master
+  git pull origin master
+  ```
+- Verify system date is correct:
+  ```bash
+  date "+%Y-%m-%d"  # Verify this matches expected release date
+  ```
+
 ## Version Scheme
 - Follow Semantic Versioning (SemVer):
   - MAJOR.MINOR.PATCH
