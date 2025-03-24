@@ -26,26 +26,27 @@
    - `npm run format`: Format code
 
 ## Release Process
-1. Pre-release Commands:
+1. Quality Commands:
    ```bash
-   npm install        # Ensure dependencies
    npm run lint      # Code quality
    npm run format    # Code formatting
    npm run test      # Run tests
    npm run build     # Build package
    ```
 
-2. Version Management:
+2. Git Operations:
    ```bash
-   npm version <major|minor|patch>
    git tag -a v<version> -m "Release v<version>"
+   git push origin main --tags  # Only after "release" command
    ```
 
-3. CI/CD Integration:
-   - Automated on tag push
+3. CI/CD Process:
+   - Triggered by tag push
    - Handles npm publishing
    - Runs quality checks
-   - Generates documentation
+   - Creates releases
+
+Note: No npm lifecycle scripts - CI handles the release process
 
 ## Technical Dependencies
 1. Runtime:

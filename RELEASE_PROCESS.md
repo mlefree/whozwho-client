@@ -6,6 +6,7 @@ This includes:
 - No git push --tags
 - No npm publish
 - No manual releases
+- No npm version or lifecycle scripts
 
 Wait for the explicit "release" command before pushing anything.
 
@@ -24,46 +25,19 @@ Wait for the explicit "release" command before pushing anything.
   date "+%Y-%m-%d"  # Verify this matches expected release date
   ```
 
-## Version Scheme
-- Follow Semantic Versioning (SemVer):
-  - MAJOR.MINOR.PATCH
-  - MAJOR: Breaking changes
-  - MINOR: New features, no breaking changes
-  - PATCH: Bug fixes, no breaking changes
-
-## Pre-release Checklist
-1. Code Quality
+## Release Steps
+1. Run Quality Checks
    ```bash
-   npm run lint
-   npm run format
+   npm run lint      # Check code quality
+   npm run format    # Format code
+   npm run test      # Run tests
+   npm run build     # Build package
    ```
 
-2. Tests
-   ```bash
-   npm run test
-   ```
-
-3. Build
-   ```bash
-   npm run build
-   ```
-
-4. Documentation
+2. Update Documentation
    - Update CHANGELOG.md
    - Update version numbers
    - Check README.md is current
-   - Verify API documentation
-
-## Release Steps
-1. Update Version
-   ```bash
-   npm version <major|minor|patch>
-   ```
-
-2. Build Package
-   ```bash
-   npm run build
-   ```
 
 3. Create Release Commit
    ```bash
@@ -85,6 +59,13 @@ Wait for the explicit "release" command before pushing anything.
    ```
 
 Note: Package publishing to npm is handled automatically by CI when a new tag is pushed.
+
+## CI/CD Process
+- Triggered by tag push
+- Runs quality checks
+- Builds package
+- Publishes to npm
+- Creates GitHub release
 
 ## Post-release
 1. Monitor CI/CD Pipeline
@@ -131,11 +112,5 @@ Note: Package publishing to npm is handled automatically by CI when a new tag is
 - Develop branch: Next release development
 - Feature branches: New features
 - Hotfix branches: Emergency fixes
-
-## CI/CD Integration
-- Automated tests on pull requests
-- Build verification
-- Code quality checks
-- Documentation generation
 
 Note: This process should be reviewed and updated as needed with each major release. 

@@ -8,12 +8,7 @@
     "build": "tsc && cp README.md dist/ && cp package.json dist/",
     "test": "jest",
     "lint": "eslint src/**/*.ts",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm run lint",
-    "preversion": "npm run lint",
-    "version": "npm run format && git add -A src",
-    "postversion": "git push && git push --tags"
+    "format": "prettier --write \"src/**/*.ts\""
   },
   "repository": {
     "type": "git",

@@ -30,15 +30,21 @@
 1. Key Rules:
    - No pushes until "release" command
    - CI handles npm publishing
+   - No npm lifecycle scripts
    - Version follows SemVer
 
 2. Release Flow:
-   - Prerequisites check
    - Quality checks
-   - Version update
    - Documentation update
+   - Git tag creation
    - Wait for release command
    - CI/CD deployment
+
+3. CI/CD Flow:
+   - Triggered by tag push
+   - Runs quality checks
+   - Publishes to npm
+   - Creates GitHub release
 
 3. Branch Strategy:
    - Main: Production code
