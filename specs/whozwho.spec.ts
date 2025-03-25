@@ -1,4 +1,4 @@
-import { Whozwho, Advice, AdviceType, WhozwhoConfig } from '../src';
+import { Advice, AdviceType, Whozwho, WhozwhoConfig } from '../src';
 import axios from 'axios';
 
 jest.mock('axios');
@@ -10,14 +10,14 @@ describe('Whozwho', () => {
     whozwho: {
       url: 'http://test-url',
       category: 'test-category',
-      id: 'test-id',
+      id: 1,
       weight: 1,
       alivePeriodInSec: 60,
-      mocked: false
+      mocked: false,
     },
     deploy: {
-      version: '1.0.0'
-    }
+      version: '1.0.0',
+    },
   };
 
   beforeEach(() => {
@@ -28,18 +28,18 @@ describe('Whozwho', () => {
   describe('isPrincipal', () => {
     it('should return true when service confirms principal status', async () => {
       mockedAxios.post.mockResolvedValueOnce({}).mockResolvedValueOnce({ data: { answer: 'yes' } });
-      
+
       const result = await whozwho.isPrincipal();
-      
+
       expect(result).toBe(true);
       expect(mockedAxios.post).toHaveBeenCalledTimes(2); // One for hi, one for actors
     });
 
     it('should return false when service denies principal status', async () => {
       mockedAxios.post.mockResolvedValueOnce({}).mockResolvedValueOnce({ data: { answer: 'no' } });
-      
+
       const result = await whozwho.isPrincipal();
-      
+
       expect(result).toBe(false);
     });
   });
@@ -48,16 +48,16 @@ describe('Whozwho', () => {
     it('should return array of advices when service responds', async () => {
       const mockAdvices = [
         { id: '1', type: AdviceType.UPDATE },
-        { id: '2', type: AdviceType.UPDATE }
+        { id: '2', type: AdviceType.UPDATE },
       ];
-      
+
       mockedAxios.post.mockResolvedValueOnce({});
-      mockedAxios.get.mockResolvedValueOnce({ 
-        data: { advices: mockAdvices } 
+      mockedAxios.get.mockResolvedValueOnce({
+        data: { advices: mockAdvices },
       });
-      
+
       const result = await whozwho.getAdvices();
-      
+
       expect(result).toHaveLength(2);
       expect(result[0]).toBeInstanceOf(Advice);
       expect(result[0].id).toBe('1');
@@ -66,29 +66,29 @@ describe('Whozwho', () => {
 
     it('should return empty array when service has no advices', async () => {
       mockedAxios.post.mockResolvedValueOnce({});
-      mockedAxios.get.mockResolvedValueOnce({ 
-        data: { advices: [] } 
+      mockedAxios.get.mockResolvedValueOnce({
+        data: { advices: [] },
       });
-      
+
       const result = await whozwho.getAdvices();
-      
+
       expect(result).toHaveLength(0);
     });
   });
 
   describe('postAdvice', () => {
     it('should create and return new advice', async () => {
-      const mockAdvice = { 
-        id: '1', 
-        type: AdviceType.UPDATE 
+      const mockAdvice = {
+        id: '1',
+        type: AdviceType.UPDATE,
       };
-      
-      mockedAxios.post.mockResolvedValueOnce({}).mockResolvedValueOnce({ 
-        data: { advice: mockAdvice } 
+
+      mockedAxios.post.mockResolvedValueOnce({}).mockResolvedValueOnce({
+        data: { advice: mockAdvice },
       });
-      
+
       const result = await whozwho.postAdvice(AdviceType.UPDATE);
-      
+
       expect(result).toBeInstanceOf(Advice);
       expect(result?.id).toBe('1');
       expect(result?.type).toBe(AdviceType.UPDATE);
@@ -98,15 +98,15 @@ describe('Whozwho', () => {
   describe('mentionThatAdviceIsOnGoing', () => {
     it('should update advice status', async () => {
       const advice = new Advice('1', AdviceType.UPDATE);
-      
+
       mockedAxios.put.mockResolvedValueOnce({});
-      
+
       await whozwho.mentionThatAdviceIsOnGoing(advice);
-      
+
       expect(mockedAxios.put).toHaveBeenCalledWith(
         expect.stringContaining('/advices/1'),
         expect.objectContaining({ status: 'onGoing' }),
-        expect.any(Object)
+        expect.any(Object),
       );
     });
   });
@@ -122,14 +122,14 @@ describe('Whozwho', () => {
         whozwho: {
           url: 'custom-url',
           category: 'custom-category',
-          id: 'custom-id',
+          id: 2,
           weight: 2,
           alivePeriodInSec: 120,
-          mocked: true
-        }
+          mocked: true,
+        },
       };
       const customWhozwho = new Whozwho(partialConfig);
       expect(customWhozwho).toBeInstanceOf(Whozwho);
     });
   });
-}); 
+});

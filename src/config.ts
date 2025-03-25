@@ -2,7 +2,7 @@ export interface WhozwhoConfig {
   whozwho: {
     url: string;
     category: string;
-    id: string;
+    id: number;
     weight: number;
     alivePeriodInSec: number;
     mocked?: boolean;
@@ -16,7 +16,7 @@ export const defaultConfig: WhozwhoConfig = {
   whozwho: {
     url: 'http://localhost:3000',
     category: 'default',
-    id: 'default',
+    id: 1,
     weight: 1,
     alivePeriodInSec: 60,
     mocked: false,

@@ -27,8 +27,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ESLint 8.57.0 for linting
 - Prettier 3.2.5 for code formatting
 
-## [0.1.0] - 2025-03-24
+## [0.2.0] - 2024-03-19
+### Breaking Changes
+- Changed `id` type in `WhozwhoConfig` from `string` to `number`
+- Updated default configuration to use numeric IDs
+
+### Code Quality
+- Improved code formatting with consistent trailing commas
+- Cleaned up imports ordering
+- Removed unnecessary comments
+
+## [0.1.0] - 2024-03-19
 Initial release 🎉
 
-[Unreleased]: https://github.com/username/whozwho-client/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/username/whozwho-client/releases/tag/v0.1.0 
+[Unreleased]: https://github.com/mlefree/whozwho-client/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/mlefree/whozwho-client/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/mlefree/whozwho-client/releases/tag/v0.1.0 

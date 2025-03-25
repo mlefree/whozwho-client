@@ -20,9 +20,9 @@ Wait for the explicit "release" command before pushing anything.
   git checkout master
   git pull origin master
   ```
-- Verify system date is correct:
+- ⚠️ VERIFY SYSTEM DATE IS CORRECT (Required for changelog)
   ```bash
-  date "+%Y-%m-%d"  # Verify this matches expected release date
+  date "+%Y-%m-%d"  # Must match actual release date
   ```
 
 ## Release Steps
@@ -35,7 +35,7 @@ Wait for the explicit "release" command before pushing anything.
    ```
 
 2. Update Documentation
-   - Update CHANGELOG.md
+   - Update CHANGELOG.md with today's date (YYYY-MM-DD)
    - Update version numbers
    - Check README.md is current
 
