@@ -30,7 +30,7 @@ const client = new Whozwho({
   whozwho: {
     url: 'https://your-whozwho-service.com',
     category: 'your-category',
-    id: 'your-id'
+    id: 1  // Numeric ID for your service instance
   }
 });
 
@@ -67,7 +67,7 @@ const client = new Whozwho({
   whozwho: {
     url: 'https://api.whozwho.com',
     category: 'my-service',
-    id: 'service-id',
+    id: 1,  // Numeric ID for service instance
     weight: 1,
     alivePeriodInSec: 60,
     mocked: false
@@ -130,7 +130,7 @@ interface Advice {
 |--------|------|-------------|
 | url | string | WhozWho service URL |
 | category | string | Service category |
-| id | string | Service identifier |
+| id | number | Service identifier (must be a number) |
 | weight | number | Instance weight |
 | alivePeriodInSec | number | Health check interval |
 | mocked | boolean | Enable mock mode |
