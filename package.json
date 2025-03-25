@@ -1,9 +1,9 @@
 {
   "name": "whozwho-client",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "TypeScript client library for WhozWho service",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "tsc && cp README.md dist/ && cp package.json dist/",
     "test": "jest",
