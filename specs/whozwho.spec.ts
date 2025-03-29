@@ -13,7 +13,7 @@ describe('Whozwho', () => {
       id: 1,
       weight: 1,
       alivePeriodInSec: 60,
-      mocked: false,
+      disabled: false,
     },
     deploy: {
       version: '1.0.0',
@@ -125,7 +125,7 @@ describe('Whozwho', () => {
           id: 2,
           weight: 2,
           alivePeriodInSec: 120,
-          mocked: true,
+          disabled: true,
         },
       };
       const customWhozwho = new Whozwho(partialConfig);

@@ -5,7 +5,7 @@ export interface WhozwhoConfig {
     id: number;
     weight: number;
     alivePeriodInSec: number;
-    mocked?: boolean;
+    disabled?: boolean;
   };
   deploy: {
     version: string;
@@ -19,7 +19,7 @@ export const defaultConfig: WhozwhoConfig = {
     id: 1,
     weight: 1,
     alivePeriodInSec: 60,
-    mocked: false,
+    disabled: false,
   },
   deploy: {
     version: '0.1.0',

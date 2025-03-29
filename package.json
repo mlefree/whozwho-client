@@ -1,10 +1,11 @@
 {
   "name": "whozwho-client",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "TypeScript client library for WhozWho service",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
+    "bump": "VERSION=\"$(npm version patch --no-git-tag-version)\"",
     "build": "tsc && cp README.md dist/ && cp package.json dist/",
     "test": "jest",
     "lint": "eslint src/**/*.ts",

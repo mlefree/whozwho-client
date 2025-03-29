@@ -8,7 +8,7 @@
 [![Jest](https://img.shields.io/badge/Jest-29.7.0-red.svg)](https://jestjs.io/)
 [![License](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
-A powerful, type-safe client for [WhozWho](https://github.com/mlefree/whozwho) services with seamless integration and robust error handling.
+A client for [WhozWho](https://github.com/mlefree/whozwho) services with seamless integration and error handling.
 
 [Getting Started](#🚀-getting-started) •
 [Features](#✨-features) •
@@ -21,7 +21,8 @@ A powerful, type-safe client for [WhozWho](https://github.com/mlefree/whozwho) s
 
 ## 🚀 Getting Started
 
-WhozWho Client provides a seamless interface to interact with WhozWho services. Built with TypeScript for type safety and modern JavaScript features for developer productivity.
+WhozWho Client provides a seamless interface to interact with WhozWho services. Built with TypeScript for type safety
+and modern JavaScript features for developer productivity.
 
 ```typescript
 import { Whozwho } from 'whozwho-client';
@@ -70,7 +71,7 @@ const client = new Whozwho({
     id: 1,  // Numeric ID for service instance
     weight: 1,
     alivePeriodInSec: 60,
-    mocked: false
+    disabled: false
   },
   deploy: {
     version: '1.0.0'
@@ -126,14 +127,14 @@ interface Advice {
 
 ## 🔧 Configuration
 
-| Option | Type | Description |
-|--------|------|-------------|
-| url | string | WhozWho service URL |
-| category | string | Service category |
-| id | number | Service identifier (must be a number) |
-| weight | number | Instance weight |
-| alivePeriodInSec | number | Health check interval |
-| mocked | boolean | Enable mock mode |
+| Option           | Type    | Description                           |
+|------------------|---------|---------------------------------------|
+| url              | string  | WhozWho service URL                   |
+| category         | string  | Service category                      |
+| id               | number  | Service identifier (must be a number) |
+| weight           | number  | Instance weight                       |
+| alivePeriodInSec | number  | Health check interval                 |
+| disabled         | boolean | Enable mock mode                      |
 
 ## 🤝 Contributing
 

@@ -1,8 +1,8 @@
 import { defaultConfig, WhozwhoConfig } from './config';
 import axios, { AxiosRequestConfig } from 'axios';
 import { Advice } from './models/advice';
-import { AdviceType, AdviceStatus } from './enums/advice-types';
-import { Question, Answer } from './enums/question-types';
+import { AdviceStatus, AdviceType } from './enums/advice-types';
+import { Answer, Question } from './enums/question-types';
 
 export class Whozwho {
   private readonly hi: {
@@ -37,7 +37,7 @@ export class Whozwho {
   }
 
   async getAdvices(): Promise<Advice[]> {
-    if (this.config.whozwho.mocked) {
+    if (this.config.whozwho.disabled) {
       return [];
     }
 
@@ -48,7 +48,6 @@ export class Whozwho {
         ? adviceResponse.data.advices
         : [];
       const advices: Advice[] = advicesResponse.map((a: Advice) => new Advice(a.id, a.type));
-      console.info('Advice received:', JSON.stringify(advices));
       return advices;
     } catch (e: any) {
       if (e?.status !== 404) {
@@ -62,7 +61,7 @@ export class Whozwho {
   }
 
   async mentionThatAdviceIsOnGoing(advice: Advice): Promise<void> {
-    if (this.config.whozwho.mocked) {
+    if (this.config.whozwho.disabled) {
       return;
     }
 
@@ -77,7 +76,7 @@ export class Whozwho {
   }
 
   async postAdvice(adviceType: AdviceType): Promise<Advice | null> {
-    if (this.config.whozwho.mocked) {
+    if (this.config.whozwho.disabled) {
       return null;
     }
 
@@ -89,7 +88,7 @@ export class Whozwho {
       const adviceResponse = await axios.post(
         `${this.config.whozwho.url}/advices`,
         advice,
-        this.options
+        this.options,
       );
       return new Advice(adviceResponse.data.advice?.id, adviceResponse.data.advice?.type);
     } catch (e) {
@@ -100,7 +99,7 @@ export class Whozwho {
   }
 
   async isPrincipal(): Promise<boolean> {
-    if (this.config.whozwho.mocked) {
+    if (this.config.whozwho.disabled) {
       return true;
     }
 
@@ -113,7 +112,7 @@ export class Whozwho {
       const principalResponse = await axios.post(
         `${this.config.whozwho.url}/actors`,
         principalQuestion,
-        this.options
+        this.options,
       );
       return principalResponse.data.answer === Answer.YES;
     } catch (e) {
