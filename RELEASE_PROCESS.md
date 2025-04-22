@@ -22,7 +22,7 @@ Wait for the explicit "release" command before pushing anything.
   ```
 - ⚠️ VERIFY SYSTEM DATE IS CORRECT (Required for changelog)
   ```bash
-  date "+%Y-%m-%d"  # Must match actual release date
+  date "+%Y-%m-%d"  # The update-changelog-date.js script will use this date
   ```
 
 ## Release Steps
@@ -35,7 +35,11 @@ Wait for the explicit "release" command before pushing anything.
    ```
 
 2. Update Documentation
-   - Update CHANGELOG.md with today's date (YYYY-MM-DD)
+   - Check CHANGELOG.md for any incorrect dates (especially future dates)
+   - Update CHANGELOG.md with today's date using the script:
+     ```bash
+     node scripts/update-changelog-date.js  # Automatically updates the latest version date to today
+     ```
    - Update version numbers
    - Check README.md is current
 
