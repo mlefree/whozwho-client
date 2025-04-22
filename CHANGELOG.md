@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.1.0] - 2024-05-15
+## [1.0.0] - 2025-04-22
+### Changed
+- Reverted from v1.1.0 to v1.0.0
+
+## [1.1.0] - 2025-04-22
 ### Added
 - Initial implementation of Whozwho client
 - Core functionality for advice management
@@ -53,7 +57,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2025-03-25
 Initial release 🎉
 
-[Unreleased]: https://github.com/mlefree/whozwho-client/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/mlefree/whozwho-client/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/mlefree/whozwho-client/compare/v1.1.0...v1.0.0
 [1.1.0]: https://github.com/mlefree/whozwho-client/compare/v0.2.2...v1.1.0
 [0.2.2]: https://github.com/mlefree/whozwho-client/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/mlefree/whozwho-client/compare/v0.2.0...v0.2.1
