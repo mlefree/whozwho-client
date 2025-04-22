@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2025-04-22
+
+### Changed
+
+- Updated version to 1.1.1
+
 ## [1.0.0] - 2025-04-22
 
 ### Added
@@ -66,11 +72,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release 🎉
 
-[Unreleased]: https://github.com/mlefree/whozwho-client/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/mlefree/whozwho-client/compare/v1.1.1...HEAD
 
-[1.0.0]: https://github.com/mlefree/whozwho-client/compare/v1.1.0...v1.0.0
+[1.1.1]: https://github.com/mlefree/whozwho-client/compare/v1.0.0...v1.1.1
 
-[1.1.0]: https://github.com/mlefree/whozwho-client/compare/v0.2.2...v1.1.0
+[1.0.0]: https://github.com/mlefree/whozwho-client/compare/v0.2.2...v1.0.0
 
 [0.2.2]: https://github.com/mlefree/whozwho-client/compare/v0.2.1...v0.2.2
 
