@@ -1,6 +1,7 @@
 export interface WhozwhoConfig {
   whozwho: {
-    url: string;
+    serverUrl: string;
+    myUrl: string;
     category: string;
     id: number;
     weight: number;
@@ -14,7 +15,8 @@ export interface WhozwhoConfig {
 
 export const defaultConfig: WhozwhoConfig = {
   whozwho: {
-    url: 'http://localhost:3000',
+    serverUrl: 'http://localhost:3003',
+    myUrl: 'http://localhost:3000',
     category: 'default',
     id: 1,
     weight: 1,

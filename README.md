@@ -29,7 +29,8 @@ import { Whozwho } from 'whozwho-client';
 
 const client = new Whozwho({
   whozwho: {
-    url: 'https://your-whozwho-service.com',
+    serverUrl: 'https://your-whozwho-service.com',
+    myUrl: 'https://your-service.com',
     category: 'your-category',
     id: 1  // Numeric ID for your service instance
   }
@@ -49,6 +50,20 @@ console.log('Is Principal:', isPrincipal);
 - 🔌 **Mock Mode**: Built-in mock mode for testing
 - 📝 **Extensive Logging**: Detailed logging for debugging
 
+## 📚 Documentation
+
+### Memory Bank
+
+This project uses a Memory Bank for comprehensive documentation and context retention. The Memory Bank is located in the
+`.memory-bank` directory and contains the following files:
+
+- `projectbrief.md`: Overview of the project, core requirements, and goals
+- `productContext.md`: Why the project exists, problems it solves, and how it works
+- `systemPatterns.md`: System architecture, key technical decisions, and design patterns
+- `techContext.md`: Technologies used, development setup, and technical constraints
+- `activeContext.md`: Current work focus, recent changes, and next steps
+- `progress.md`: What works, what's left to build, and known issues
+
 ## 📦 Installation
 
 ```bash
@@ -66,7 +81,8 @@ import { Whozwho } from 'whozwho-client';
 
 const client = new Whozwho({
   whozwho: {
-    url: 'https://api.whozwho.com',
+    serverUrl: 'https://api.whozwho.com',
+    myUrl: 'https://my-service.com',
     category: 'my-service',
     id: 1,  // Numeric ID for service instance
     weight: 1,
@@ -113,6 +129,8 @@ Main client class for interacting with WhozWho services.
 - `postAdvice(type: AdviceType)`: Create a new advice
 - `mentionThatAdviceIsOnGoing(advice: Advice)`: Update advice status
 - `isPrincipal()`: Check if current instance is principal
+- `getPrincipalAddress(category: string)`: Get the address of the principal actor for a specific category
+- `getAllAddresses(category: string)`: Get addresses of all actors in a specific category
 
 ### `Advice`
 
@@ -129,7 +147,8 @@ interface Advice {
 
 | Option           | Type    | Description                           |
 |------------------|---------|---------------------------------------|
-| url              | string  | WhozWho service URL                   |
+| serverUrl        | string  | WhozWho service URL                   |
+| myUrl            | string  | URL of this service instance          |
 | category         | string  | Service category                      |
 | id               | number  | Service identifier (must be a number) |
 | weight           | number  | Instance weight                       |

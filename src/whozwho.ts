@@ -30,7 +30,8 @@ export class Whozwho {
 
     this.options = {
       headers: {
-        Host: `${this.config.whozwho.category}:${this.config.whozwho.id}`,
+        Host: `${this.config.whozwho.myUrl}`,
+        Forwarded: `for=${this.config.whozwho.category};by=${this.config.whozwho.id}`,
       },
       timeout: 10000,
     };
@@ -42,13 +43,15 @@ export class Whozwho {
     }
 
     try {
-      await axios.post(this.config.whozwho.url + '/hi', this.getHi(), this.options);
-      const adviceResponse = await axios.get(`${this.config.whozwho.url}/advices`, this.options);
+      await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
+      const adviceResponse = await axios.get(
+        `${this.config.whozwho.serverUrl}/advices`,
+        this.options
+      );
       const advicesResponse = adviceResponse?.data?.advices?.length
         ? adviceResponse.data.advices
         : [];
-      const advices: Advice[] = advicesResponse.map((a: Advice) => new Advice(a.id, a.type));
-      return advices;
+      return advicesResponse.map((a: Advice) => new Advice(a.id, a.type));
     } catch (e: any) {
       if (e?.status !== 404) {
         console.error('[whozwho] pb with advice', e);
@@ -69,7 +72,11 @@ export class Whozwho {
       const mention = {
         status: AdviceStatus.ONGOING,
       };
-      await axios.put(`${this.config.whozwho.url}/advices/${advice.id}`, mention, this.options);
+      await axios.put(
+        `${this.config.whozwho.serverUrl}/advices/${advice.id}`,
+        mention,
+        this.options
+      );
     } catch (e) {
       console.error('[whozwho] pb with advice on going', e);
     }
@@ -84,11 +91,11 @@ export class Whozwho {
       const advice = {
         type: adviceType,
       };
-      await axios.post(this.config.whozwho.url + '/hi', this.getHi(), this.options);
+      await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
       const adviceResponse = await axios.post(
-        `${this.config.whozwho.url}/advices`,
+        `${this.config.whozwho.serverUrl}/advices`,
         advice,
-        this.options,
+        this.options
       );
       return new Advice(adviceResponse.data.advice?.id, adviceResponse.data.advice?.type);
     } catch (e) {
@@ -108,11 +115,11 @@ export class Whozwho {
         question: Question.PRINCIPAL,
       };
 
-      await axios.post(this.config.whozwho.url + '/hi', this.getHi(), this.options);
+      await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
       const principalResponse = await axios.post(
-        `${this.config.whozwho.url}/actors`,
+        `${this.config.whozwho.serverUrl}/actors`,
         principalQuestion,
-        this.options,
+        this.options
       );
       return principalResponse.data.answer === Answer.YES;
     } catch (e) {
@@ -122,11 +129,63 @@ export class Whozwho {
     return false;
   }
 
+  async getPrincipalAddress(category: string) {
+    if (this.config.whozwho.disabled) {
+      return null;
+    }
+
+    try {
+      const principalAddressQuestion = {
+        category,
+        question: Question.ADDRESS_PRINCIPAL,
+      };
+
+      await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
+      const principalResponse = await axios.post(
+        `${this.config.whozwho.serverUrl}/actors`,
+        principalAddressQuestion,
+        this.options
+      );
+
+      return principalResponse.data;
+    } catch (e) {
+      console.error('[whozwho] pb with principal', e);
+    }
+
+    return {};
+  }
+
+  async getAllAddresses(category: string) {
+    if (this.config.whozwho.disabled) {
+      return null;
+    }
+
+    try {
+      const allAddressQuestion = {
+        category,
+        question: Question.ADDRESS_ALL,
+      };
+
+      await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
+      const response = await axios.post(
+        `${this.config.whozwho.serverUrl}/actors`,
+        allAddressQuestion,
+        this.options
+      );
+
+      return response.data;
+    } catch (e) {
+      console.error('[whozwho] pb with principal', e);
+    }
+
+    return {};
+  }
+
   private getHi(lastLogs?: string[]) {
     const hi = { ...this.hi };
     let last100Errors: string[] = [];
     try {
-      last100Errors = lastLogs ? lastLogs : [];
+      last100Errors = lastLogs ?? [];
       if (lastLogs && lastLogs.length > 100) {
         last100Errors = lastLogs.slice(lastLogs.length - 100);
       }
