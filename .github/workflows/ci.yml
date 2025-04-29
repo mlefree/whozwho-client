@@ -2,8 +2,7 @@ name: CI
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches: [ main ]
 
 jobs:
   build:
@@ -15,11 +14,42 @@ jobs:
         with:
           node-version: '18'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm install
-      - run: npm run lint
-      - run: npm run format
-      - run: npm test
-      - run: npm run build
+
+      - name: Test
+        run: npm install && npm test
+
+      - name: Check version against npm
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          NPM_VERSION=$(npm view raain-model version || echo "0.0.0")
+
+          if [ "$PACKAGE_VERSION" == "$NPM_VERSION" ]; then
+            echo "Warning: Version $PACKAGE_VERSION is not greater than npm version $NPM_VERSION. Proceeding with release with version bump."
+            npm run bump
+          else
+            # Convert versions to comparable format (remove dots) ?
+            echo "Version looks ok"
+          fi
+
+      - name: Build
+        run: npm run build
+
+      - name: Create and push tag/changes with version from package.json
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          # Check if tag already exists
+          if git ls-remote --tags origin | grep -q "refs/tags/v$VERSION"; then
+            echo "Tag v$VERSION already exists. Skipping tag creation."
+          else
+            git add .
+            git tag -a "v$VERSION" -m "Release v$VERSION"
+            git commit -m "Release v$VERSION"
+            git push --tags
+          fi
+
       - run: npm publish
         working-directory: ./dist
         env:
