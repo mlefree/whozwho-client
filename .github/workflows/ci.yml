@@ -4,12 +4,19 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
@@ -21,7 +28,7 @@ jobs:
       - name: Check version against npm
         run: |
           PACKAGE_VERSION=$(node -p "require('./package.json').version")
-          NPM_VERSION=$(npm view raain-model version || echo "0.0.0")
+          NPM_VERSION=$(npm view whozwho-client version || echo "0.0.0")
 
           if [ "$PACKAGE_VERSION" == "$NPM_VERSION" ]; then
             echo "Warning: Version $PACKAGE_VERSION is not greater than npm version $NPM_VERSION. Proceeding with release with version bump."
@@ -40,6 +47,8 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create and push tag/changes with version from package.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=$(node -p "require('./package.json').version")
           git config --local user.email "action@github.com"
@@ -50,5 +59,6 @@ jobs:
             echo "Tag v$VERSION already exists. Skipping tag creation."
           else
             git tag -a "v$VERSION" -m "Release v$VERSION"
+            git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
             git push --tags
           fi
