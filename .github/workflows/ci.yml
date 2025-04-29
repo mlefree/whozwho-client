@@ -46,7 +46,6 @@ jobs:
           else
             git add .
             git tag -a "v$VERSION" -m "Release v$VERSION"
-            git commit -m "Release v$VERSION"
             git push --tags
           fi
 
