@@ -34,6 +34,11 @@ jobs:
       - name: Build
         run: npm run build
 
+      - run: npm publish
+        working-directory: ./dist
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Create and push tag/changes with version from package.json
         run: |
           VERSION=$(node -p "require('./package.json').version")
@@ -47,8 +52,3 @@ jobs:
             git tag -a "v$VERSION" -m "Release v$VERSION"
             git push --tags
           fi
-
-      - run: npm publish
-        working-directory: ./dist
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
