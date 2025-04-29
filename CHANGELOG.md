@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.2] - 2025-04-27
+
+### Added
+
+- Documentation for AdviceType, AdviceStatus, Question, and Answer enums
+- Documentation for Memory Bank system, including the `.airules` file concept
+- Default values to the Configuration table in README
+
+### Changed
+
+- Updated version to 1.1.2
+- Improved error handling with null-safe access using optional chaining and nullish coalescing operators
+- Changed return values from `null` to `{}` in `getPrincipalAddress` and `getAllAddresses` methods when client is
+  disabled
+- Added trailing commas to function calls for code consistency
+- Updated tests to match the new return value structure
+
+### Removed
+
+- Badges for Node.js, Axios, and Jest from README
+
 ## [1.1.1] - 2025-04-22
 
 ### Changed
@@ -72,7 +93,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release 🎉
 
-[Unreleased]: https://github.com/mlefree/whozwho-client/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/mlefree/whozwho-client/compare/v1.1.2...HEAD
+
+[1.1.2]: https://github.com/mlefree/whozwho-client/compare/v1.1.1...v1.1.2
 
 [1.1.1]: https://github.com/mlefree/whozwho-client/compare/v1.0.0...v1.1.1
 

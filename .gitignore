@@ -25,9 +25,11 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+.output.txt
+.outputs.txt
 
 *gitignored*
 
 # Logs
 logs/
-*.log 
+*.log

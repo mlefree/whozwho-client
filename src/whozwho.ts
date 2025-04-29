@@ -46,7 +46,7 @@ export class Whozwho {
       await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
       const adviceResponse = await axios.get(
         `${this.config.whozwho.serverUrl}/advices`,
-        this.options
+        this.options,
       );
       const advicesResponse = adviceResponse?.data?.advices?.length
         ? adviceResponse.data.advices
@@ -75,7 +75,7 @@ export class Whozwho {
       await axios.put(
         `${this.config.whozwho.serverUrl}/advices/${advice.id}`,
         mention,
-        this.options
+        this.options,
       );
     } catch (e) {
       console.error('[whozwho] pb with advice on going', e);
@@ -95,7 +95,7 @@ export class Whozwho {
       const adviceResponse = await axios.post(
         `${this.config.whozwho.serverUrl}/advices`,
         advice,
-        this.options
+        this.options,
       );
       return new Advice(adviceResponse.data.advice?.id, adviceResponse.data.advice?.type);
     } catch (e) {
@@ -119,7 +119,7 @@ export class Whozwho {
       const principalResponse = await axios.post(
         `${this.config.whozwho.serverUrl}/actors`,
         principalQuestion,
-        this.options
+        this.options,
       );
       return principalResponse.data.answer === Answer.YES;
     } catch (e) {
@@ -131,7 +131,7 @@ export class Whozwho {
 
   async getPrincipalAddress(category: string) {
     if (this.config.whozwho.disabled) {
-      return null;
+      return {};
     }
 
     try {
@@ -144,10 +144,10 @@ export class Whozwho {
       const principalResponse = await axios.post(
         `${this.config.whozwho.serverUrl}/actors`,
         principalAddressQuestion,
-        this.options
+        this.options,
       );
 
-      return principalResponse.data;
+      return principalResponse.data?.answer ?? {};
     } catch (e) {
       console.error('[whozwho] pb with principal', e);
     }
@@ -157,7 +157,7 @@ export class Whozwho {
 
   async getAllAddresses(category: string) {
     if (this.config.whozwho.disabled) {
-      return null;
+      return {};
     }
 
     try {
@@ -170,10 +170,10 @@ export class Whozwho {
       const response = await axios.post(
         `${this.config.whozwho.serverUrl}/actors`,
         allAddressQuestion,
-        this.options
+        this.options,
       );
 
-      return response.data;
+      return response.data?.answer ?? {};
     } catch (e) {
       console.error('[whozwho] pb with principal', e);
     }

@@ -229,7 +229,7 @@ describe('Whozwho', () => {
   describe('getPrincipalAddress', () => {
     it('should return address when service responds', async () => {
       mockedAxios.post.mockResolvedValueOnce({}).mockResolvedValueOnce({
-        data: { 123: 'http://principal-address' },
+        data: { answer: { 123: 'http://principal-address' } },
       });
 
       const result = await whozwho.getPrincipalAddress('test-category');
@@ -263,7 +263,7 @@ describe('Whozwho', () => {
 
       const result = await disabledWhozwho.getPrincipalAddress('test-category');
 
-      expect(result).toBeNull();
+      expect(Object.keys(result).length).toBe(0);
       expect(mockedAxios.post).not.toHaveBeenCalled();
     });
   });
@@ -271,7 +271,7 @@ describe('Whozwho', () => {
   describe('getAllAddresses', () => {
     it('should return addresses when service responds', async () => {
       mockedAxios.post.mockResolvedValueOnce({}).mockResolvedValueOnce({
-        data: { 1: 'http://address1', 2: 'http://address2' },
+        data: { answer: { 1: 'http://address1', 2: 'http://address2' } },
       });
 
       const result = await whozwho.getAllAddresses('test-category');
@@ -305,7 +305,7 @@ describe('Whozwho', () => {
 
       const result = await disabledWhozwho.getAllAddresses('test-category');
 
-      expect(result).toBeNull();
+      expect(Object.keys(result).length).toBe(0);
       expect(mockedAxios.post).not.toHaveBeenCalled();
     });
   });

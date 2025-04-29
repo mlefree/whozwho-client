@@ -3,9 +3,7 @@
 <div align="center">
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-blue.svg)](https://www.typescriptlang.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-18.x-green.svg)](https://nodejs.org/)
-[![Axios](https://img.shields.io/badge/Axios-1.6.7-purple.svg)](https://axios-http.com/)
-[![Jest](https://img.shields.io/badge/Jest-29.7.0-red.svg)](https://jestjs.io/)
+[![Version](https://img.shields.io/badge/version-1.1.2-green.svg)](package.json)
 [![License](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
 A client for [WhozWho](https://github.com/mlefree/whozwho) services with seamless integration and error handling.
@@ -57,12 +55,17 @@ console.log('Is Principal:', isPrincipal);
 This project uses a Memory Bank for comprehensive documentation and context retention. The Memory Bank is located in the
 `.memory-bank` directory and contains the following files:
 
+- `memory-bank-rules.md`: Rules to follow and to consider in all contexts
 - `projectbrief.md`: Overview of the project, core requirements, and goals
 - `productContext.md`: Why the project exists, problems it solves, and how it works
 - `systemPatterns.md`: System architecture, key technical decisions, and design patterns
 - `techContext.md`: Technologies used, development setup, and technical constraints
 - `activeContext.md`: Current work focus, recent changes, and next steps
 - `progress.md`: What works, what's left to build, and known issues
+
+The Memory Bank system also includes the concept of a `.airules` file, which serves as a learning journal for the project. This file captures important patterns, preferences, and project intelligence that help work more effectively. While not yet implemented in this project, it's an important part of the Memory Bank system described in the `memory-bank-rules.md` file.
+
+=> !! These files should always be considered as a context and kept up-to-date !!
 
 ## 📦 Installation
 
@@ -90,7 +93,7 @@ const client = new Whozwho({
     disabled: false
   },
   deploy: {
-    version: '1.1.1'
+    version: '1.1.2'
   }
 });
 ```
@@ -141,19 +144,63 @@ interface Advice {
   id: string;
   type: AdviceType;
 }
+
+### `AdviceType`
+
+Enum for different types of advice:
+
+```typescript
+enum AdviceType {
+  UPDATE = 'you need an update'
+}
+```
+
+### `AdviceStatus`
+
+Enum for tracking the status of advice:
+
+```typescript
+enum AdviceStatus {
+  TODO = 'toDo',
+  ONGOING = 'onGoing',
+  DONE = 'done'
+}
+```
+
+### `Question`
+
+Enum for different types of questions that can be asked to the WhozWho service:
+
+```typescript
+enum Question {
+  PRINCIPAL = 'have I the principal role for my category ?',
+  ADDRESS_ALL = 'what is all actors (from a category) addresses ?',
+  ADDRESS_PRINCIPAL = 'what is principal actor (from a category) address ?'
+}
+```
+
+### `Answer`
+
+Enum for standard answers from the WhozWho service:
+
+```typescript
+enum Answer {
+  YES = 'yes',
+  NO = 'no'
+}
 ```
 
 ## 🔧 Configuration
 
-| Option           | Type    | Description                           |
-|------------------|---------|---------------------------------------|
-| serverUrl        | string  | WhozWho service URL                   |
-| myUrl            | string  | URL of this service instance          |
-| category         | string  | Service category                      |
-| id               | number  | Service identifier (must be a number) |
-| weight           | number  | Instance weight                       |
-| alivePeriodInSec | number  | Health check interval                 |
-| disabled         | boolean | Enable mock mode                      |
+| Option           | Type    | Description                           | Default Value          |
+|------------------|---------|---------------------------------------|-----------------------|
+| serverUrl        | string  | WhozWho service URL                   | 'http://localhost:3003' |
+| myUrl            | string  | URL of this service instance          | 'http://localhost:3000' |
+| category         | string  | Service category                      | 'default'             |
+| id               | number  | Service identifier (must be a number) | 1                     |
+| weight           | number  | Instance weight                       | 1                     |
+| alivePeriodInSec | number  | Health check interval                 | 60                    |
+| disabled         | boolean | Enable mock mode                      | false                 |
 
 ## 🤝 Contributing
 
