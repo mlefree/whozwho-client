@@ -143,7 +143,7 @@ export class Whozwho {
         this.options,
       );
 
-      const actors: { actorId: number, actorAddress: string, } [] = response.data?.actors ?? [];
+      const actors: { actorId: number, actorAddress: string, } [] = response?.data?.actors ?? [];
       return actors.length > 0 ? actors[0] : undefined;
     } catch (e) {
       console.error('[whozwho] pb with principal', e);

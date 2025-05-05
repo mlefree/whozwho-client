@@ -1,4 +1,4 @@
-import { Advice, AdviceType, Question, Whozwho, WhozwhoConfig } from '../src';
+import { Advice, AdviceType, Whozwho, WhozwhoConfig } from '../src';
 import axios from 'axios';
 
 jest.mock('axios');
@@ -254,7 +254,7 @@ describe('Whozwho', () => {
 
       const result = await whozwho.getPrincipalAddress('test-category');
 
-      expect(result).toEqual({});
+      expect(result).toEqual(undefined);
     });
 
     it('should return null when client is disabled', async () => {
@@ -267,7 +267,7 @@ describe('Whozwho', () => {
 
       const result = await disabledWhozwho.getPrincipalAddress('test-category');
 
-      expect(Object.keys(result).length).toBe(0);
+      expect(result).toBe(undefined);
       expect(mockedAxios.post).not.toHaveBeenCalled();
     });
   });
