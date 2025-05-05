@@ -129,9 +129,9 @@ export class Whozwho {
     return false;
   }
 
-  async getPrincipalAddress(category: string) {
+  async getPrincipalAddress(category: string): Promise<{ actorId: number, actorAddress: string, } | undefined> {
     if (this.config.whozwho.disabled) {
-      return {};
+      return;
     }
 
     try {
@@ -143,13 +143,11 @@ export class Whozwho {
         this.options,
       );
 
-      const actors = response.data?.actors ?? [];
-      return actors.length > 0 ? actors[0] : {};
+      const actors: { actorId: number, actorAddress: string, } [] = response.data?.actors ?? [];
+      return actors.length > 0 ? actors[0] : undefined;
     } catch (e) {
       console.error('[whozwho] pb with principal', e);
     }
-
-    return {};
   }
 
   async getAllAddresses(category: string) {
