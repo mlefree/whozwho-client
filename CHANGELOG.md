@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-05-05
+
+### Added
+
+- Added "Installation" section at the top of README.md
+- Added "Release process" section in README.md
+
+### Changed
+
+- Changed API from POST to GET for actor endpoints
+- Updated URL structure to use query parameters for filtering instead of request body
+- Modified return value structure (now returning `actors` array instead of `answer` object)
+- Added special handling for principal actor in `getPrincipalAddress` method
+- Updated tests to match the new API response format
+- Improved formatting in the configuration table in README.md
+- Reformatted documentation for better readability
+
 ## [1.1.2] - 2025-04-27
 
 ### Added
@@ -93,7 +110,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release 🎉
 
-[Unreleased]: https://github.com/mlefree/whozwho-client/compare/v1.1.2...HEAD
+[Unreleased]: https://github.com/mlefree/whozwho-client/compare/v1.2.0...HEAD
+
+[1.2.0]: https://github.com/mlefree/whozwho-client/compare/v1.1.2...v1.2.0
 
 [1.1.2]: https://github.com/mlefree/whozwho-client/compare/v1.1.1...v1.1.2
 

@@ -228,19 +228,23 @@ describe('Whozwho', () => {
 
   describe('getPrincipalAddress', () => {
     it('should return address when service responds', async () => {
-      mockedAxios.post.mockResolvedValueOnce({}).mockResolvedValueOnce({
-        data: { answer: { 123: 'http://principal-address' } },
-      });
+      const actors = [{
+        actorId: 123,
+        actorAddress: 'http://principal-address1',
+      }];
+      mockedAxios.post.mockResolvedValueOnce({});
+      mockedAxios.get.mockResolvedValueOnce({ data: { actors } });
 
       const result = await whozwho.getPrincipalAddress('test-category');
 
-      expect(result).toEqual({ 123: 'http://principal-address' });
+      expect(result).toEqual(actors[0]);
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        expect.stringContaining('/actors'),
-        expect.objectContaining({
-          category: 'test-category',
-          question: Question.ADDRESS_PRINCIPAL,
-        }),
+        expect.stringContaining('/hi'),
+        expect.any(Object),
+        expect.any(Object),
+      );
+      expect(mockedAxios.get).toHaveBeenCalledWith(
+        expect.stringContaining('/actors?category=test-category&principal=true'),
         expect.any(Object),
       );
     });
@@ -269,26 +273,38 @@ describe('Whozwho', () => {
   });
 
   describe('getAllAddresses', () => {
+    beforeEach(() => {
+      jest.resetAllMocks();
+    });
+
     it('should return addresses when service responds', async () => {
-      mockedAxios.post.mockResolvedValueOnce({}).mockResolvedValueOnce({
-        data: { answer: { 1: 'http://address1', 2: 'http://address2' } },
-      });
+      const actors = [{
+        actorId: 123,
+        actorAddress: 'http://principal-address1',
+      }, {
+        actorId: 124,
+        actorAddress: 'http://principal-address2',
+      }];
+      mockedAxios.post.mockResolvedValueOnce({});
+      mockedAxios.get.mockResolvedValueOnce({ data: { actors } });
 
       const result = await whozwho.getAllAddresses('test-category');
 
-      expect(result).toEqual({ 1: 'http://address1', 2: 'http://address2' });
+      expect(result).toEqual(actors);
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        expect.stringContaining('/actors'),
-        expect.objectContaining({
-          category: 'test-category',
-          question: Question.ADDRESS_ALL,
-        }),
+        expect.stringContaining('/hi'),
+        expect.any(Object),
+        expect.any(Object),
+      );
+      expect(mockedAxios.get).toHaveBeenCalledWith(
+        expect.stringContaining('/actors?category=test-category'),
         expect.any(Object),
       );
     });
 
     it('should return empty object when service fails', async () => {
-      mockedAxios.post.mockResolvedValueOnce({}).mockRejectedValueOnce(new Error('Service error'));
+      mockedAxios.post.mockResolvedValueOnce({});
+      mockedAxios.get.mockRejectedValueOnce(new Error('Service error'));
 
       const result = await whozwho.getAllAddresses('test-category');
 

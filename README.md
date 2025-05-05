@@ -17,6 +17,14 @@ A client for [WhozWho](https://github.com/mlefree/whozwho) services with seamles
 
 </div>
 
+## 📦 Installation
+
+```bash
+npm install whozwho-client
+# or
+yarn add whozwho-client
+```
+
 ## 🚀 Getting Started
 
 WhozWho Client provides a seamless interface to interact with WhozWho services. Built with TypeScript for type safety
@@ -63,17 +71,12 @@ This project uses a Memory Bank for comprehensive documentation and context rete
 - `activeContext.md`: Current work focus, recent changes, and next steps
 - `progress.md`: What works, what's left to build, and known issues
 
-The Memory Bank system also includes the concept of a `.airules` file, which serves as a learning journal for the project. This file captures important patterns, preferences, and project intelligence that help work more effectively. While not yet implemented in this project, it's an important part of the Memory Bank system described in the `memory-bank-rules.md` file.
+The Memory Bank system also includes the concept of a `.airules` file, which serves as a learning journal for the
+project. This file captures important patterns, preferences, and project intelligence that help work more effectively.
+While not yet implemented in this project, it's an important part of the Memory Bank system described in the
+`memory-bank-rules.md` file.
 
 => !! These files should always be considered as a context and kept up-to-date !!
-
-## 📦 Installation
-
-```bash
-npm install whozwho-client
-# or
-yarn add whozwho-client
-```
 
 ## 💡 Usage
 
@@ -144,6 +147,7 @@ interface Advice {
   id: string;
   type: AdviceType;
 }
+```
 
 ### `AdviceType`
 
@@ -192,15 +196,15 @@ enum Answer {
 
 ## 🔧 Configuration
 
-| Option           | Type    | Description                           | Default Value          |
-|------------------|---------|---------------------------------------|-----------------------|
+| Option           | Type    | Description                           | Default Value           |
+|------------------|---------|---------------------------------------|-------------------------|
 | serverUrl        | string  | WhozWho service URL                   | 'http://localhost:3003' |
 | myUrl            | string  | URL of this service instance          | 'http://localhost:3000' |
-| category         | string  | Service category                      | 'default'             |
-| id               | number  | Service identifier (must be a number) | 1                     |
-| weight           | number  | Instance weight                       | 1                     |
-| alivePeriodInSec | number  | Health check interval                 | 60                    |
-| disabled         | boolean | Enable mock mode                      | false                 |
+| category         | string  | Service category                      | 'default'               |
+| id               | number  | Service identifier (must be a number) | 1                       |
+| weight           | number  | Instance weight                       | 1                       |
+| alivePeriodInSec | number  | Health check interval                 | 60                      |
+| disabled         | boolean | Enable mock mode                      | false                   |
 
 ## 🤝 Contributing
 
@@ -211,6 +215,10 @@ We welcome contributions! Follow these steps:
 3. Commit your changes
 4. Push to the branch
 5. Open a Pull Request
+
+## Release process
+
+Before any git push, consider to align documentation: readme, changelog, badge version, memory bank...
 
 ## 📝 License
 

@@ -135,19 +135,16 @@ export class Whozwho {
     }
 
     try {
-      const principalAddressQuestion = {
-        category,
-        question: Question.ADDRESS_PRINCIPAL,
-      };
+      const actorsFilter = `?category=${category}&principal=true`;
 
       await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
-      const principalResponse = await axios.post(
-        `${this.config.whozwho.serverUrl}/actors`,
-        principalAddressQuestion,
+      const response = await axios.get(
+        `${this.config.whozwho.serverUrl}/actors${actorsFilter}`,
         this.options,
       );
 
-      return principalResponse.data?.answer ?? {};
+      const actors = response.data?.actors ?? [];
+      return actors.length > 0 ? actors[0] : {};
     } catch (e) {
       console.error('[whozwho] pb with principal', e);
     }
@@ -161,19 +158,15 @@ export class Whozwho {
     }
 
     try {
-      const allAddressQuestion = {
-        category,
-        question: Question.ADDRESS_ALL,
-      };
+      const actorsFilter = `?category=${category}`;
 
       await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
-      const response = await axios.post(
-        `${this.config.whozwho.serverUrl}/actors`,
-        allAddressQuestion,
+      const response = await axios.get(
+        `${this.config.whozwho.serverUrl}/actors${actorsFilter}`,
         this.options,
       );
 
-      return response.data?.answer ?? {};
+      return response.data?.actors ?? [];
     } catch (e) {
       console.error('[whozwho] pb with principal', e);
     }
