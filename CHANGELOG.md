@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Documentation for AdviceType, AdviceStatus, Question, and Answer enums
-- Documentation for Memory Bank system, including the `.airules` file concept
+- Documentation for Memory Bank system
 - Default values to the Configuration table in README
 
 ### Changed

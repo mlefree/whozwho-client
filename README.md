@@ -71,11 +71,6 @@ This project uses a Memory Bank for comprehensive documentation and context rete
 - `activeContext.md`: Current work focus, recent changes, and next steps
 - `progress.md`: What works, what's left to build, and known issues
 
-The Memory Bank system also includes the concept of a `.airules` file, which serves as a learning journal for the
-project. This file captures important patterns, preferences, and project intelligence that help work more effectively.
-While not yet implemented in this project, it's an important part of the Memory Bank system described in the
-`memory-bank-rules.md` file.
-
 => !! These files should always be considered as a context and kept up-to-date !!
 
 ## 💡 Usage
