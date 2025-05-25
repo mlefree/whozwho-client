@@ -1,19 +1,9 @@
 {
   "name": "whozwho-client",
-  "version": "1.2.1",
+  "version": "1.2.3",
   "description": "TypeScript client library for WhozWho service",
   "main": "index.js",
   "types": "index.d.ts",
-  "scripts": {
-    "bump": "VERSION=\"$(npm version patch --no-git-tag-version)\"",
-    "update-changelog": "node ./scripts/update-changelog-date.js",
-    "build": "tsc && cp README.md dist/ && cp package.json dist/",
-    "test": "jest",
-    "lint": "eslint src/**/*.ts",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "release": "git add . && git commit -m \"chore: release v$(node -p \"require('./package.json').version\")\" && git push origin main",
-    "release-with-bump": "npm run bump && npm run release"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mlefree/whozwho-client.git"
@@ -29,6 +19,24 @@
     "url": "https://github.com/mlefree/whozwho-client/issues"
   },
   "homepage": "https://github.com/mlefree/whozwho-client#readme",
+  "scripts": {
+    "bp:_clean": "rm -rf package-lock.json node_modules .gen .logs .nyc_output .logs .output.txt .coverage .angular dist app www && npm i",
+    "bp:bump": "OLD_VERSION=\"v$(node -e \"console.log(require('./package.json').version)\")\" && VERSION=\"$(npm version patch --no-git-tag-version)\" && npm i && echo \"export const bpInfo = {version:'$VERSION'}\" > ./src/bpInfo.ts && git tag $OLD_VERSION && git checkout -b $VERSION && git push origin refs/heads/$VERSION:$VERSION --tags && git push --set-upstream origin $VERSION",
+    "bp:update-changelog-dates": "node ./scripts/bp/update-changelog-date.js",
+    "bp:use-local-deps": "node ./scripts/bp/switch-dependencies.js local && npm run bp:_clean",
+    "bp:use-remote-deps": "node ./scripts/bp/switch-dependencies.js remote && npm run bp:_clean",
+    "bp:branch:push": "BRANCH=$(git rev-parse --abbrev-ref HEAD) && git add . && (git diff-index --quiet HEAD && echo 'No changes to commit' || (git commit -m \"$BRANCH pushed\" && git push))",
+    "bp:branch:squash": "node ./scripts/bp/squash-commits.js",
+    "bp:branch:check-before-release": "npm run bp:use-remote-deps && node ./scripts/bp/check-before-release.js",
+    "bp:branch:last-push:main": "npm run bp:branch:push && npm run bp:branch:squash && BRANCH=$(git rev-parse --abbrev-ref HEAD) && git checkout main && git merge $BRANCH && git push",
+    "bp:main:package": "git checkout package && git merge main && git push && git checkout main",
+    "build": "tsc && cp README.md dist/ && cp package.json dist/",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "release": "git add . && git commit -m \"chore: release v$(node -p \"require('./package.json').version\")\" && git push origin main",
+    "release-with-bump": "npm run bump && npm run release"
+  },
   "dependencies": {
     "axios": "^1.8.4"
   },
