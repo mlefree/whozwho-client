@@ -1,8 +1,8 @@
-import { AdviceType } from '../enums/advice-types';
+import {AdviceType} from '../enums/advice-types';
 
 export class Advice {
-  constructor(
-    public id: string,
-    public type: AdviceType
-  ) {}
+    constructor(
+        public id: string,
+        public type: AdviceType
+    ) {}
 }

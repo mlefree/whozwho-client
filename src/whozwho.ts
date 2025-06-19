@@ -1,190 +1,198 @@
-import { defaultConfig, WhozwhoConfig } from './config';
-import axios, { AxiosRequestConfig } from 'axios';
-import { Advice } from './models/advice';
-import { AdviceStatus, AdviceType } from './enums/advice-types';
-import { Answer, Question } from './enums/question-types';
+import {defaultConfig, WhozwhoConfig} from './config';
+import axios, {AxiosError, AxiosRequestConfig} from 'axios';
+import {Advice} from './models/advice';
+import {AdviceStatus, AdviceType} from './enums/advice-types';
+import {Answer, Question} from './enums/question-types';
 
 export class Whozwho {
-  private readonly hi: {
-    weight: number;
-    alivePeriodInSec: number;
-    version: string;
-    last100Errors: any[];
-  };
-
-  private readonly options: AxiosRequestConfig;
-  private readonly config: WhozwhoConfig;
-
-  constructor(config: Partial<WhozwhoConfig> = {}) {
-    this.config = {
-      ...defaultConfig,
-      ...config,
+    private readonly hi: {
+        weight: number;
+        alivePeriodInSec: number;
+        version: string;
+        last100Errors: string[];
     };
 
-    this.hi = {
-      weight: this.config.whozwho.weight,
-      alivePeriodInSec: this.config.whozwho.alivePeriodInSec,
-      version: this.config.deploy.version,
-      last100Errors: [],
-    };
+    private readonly options: AxiosRequestConfig;
+    private readonly config: WhozwhoConfig;
 
-    this.options = {
-      headers: {
-        Host: `${this.config.whozwho.myUrl}`,
-        Forwarded: `for=${this.config.whozwho.category};by=${this.config.whozwho.id}`,
-      },
-      timeout: 10000,
-    };
-  }
+    constructor(config: Partial<WhozwhoConfig> = {}) {
+        this.config = {
+            ...defaultConfig,
+            ...config,
+        };
 
-  async getAdvices(): Promise<Advice[]> {
-    if (this.config.whozwho.disabled) {
-      return [];
+        this.hi = {
+            weight: this.config.whozwho.weight,
+            alivePeriodInSec: this.config.whozwho.alivePeriodInSec,
+            version: this.config.deploy.version,
+            last100Errors: [],
+        };
+
+        this.options = {
+            headers: {
+                Host: `${this.config.whozwho.myUrl}`,
+                Forwarded: `for=${this.config.whozwho.category};by=${this.config.whozwho.id}`,
+            },
+            timeout: 10000,
+        };
     }
 
-    try {
-      await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
-      const adviceResponse = await axios.get(
-        `${this.config.whozwho.serverUrl}/advices`,
-        this.options,
-      );
-      const advicesResponse = adviceResponse?.data?.advices?.length
-        ? adviceResponse.data.advices
-        : [];
-      return advicesResponse.map((a: Advice) => new Advice(a.id, a.type));
-    } catch (e: any) {
-      if (e?.status !== 404) {
-        console.error('[whozwho] pb with advice', e);
-      } else {
-        // no advice => no pb
-      }
+    async getAdvices(): Promise<Advice[]> {
+        if (this.config.whozwho.disabled) {
+            return [];
+        }
+
+        try {
+            await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
+            const adviceResponse = await axios.get(
+                `${this.config.whozwho.serverUrl}/advices`,
+                this.options
+            );
+            const advicesResponse = adviceResponse?.data?.advices?.length
+                ? adviceResponse.data.advices
+                : [];
+            return advicesResponse.map((a: Advice) => new Advice(a.id, a.type));
+        } catch (e: unknown) {
+            if ((e as AxiosError)?.status !== 404) {
+                this.logError('pb with get advices', e);
+            } else {
+                // no advice => no pb
+            }
+        }
+
+        return [];
     }
 
-    return [];
-  }
+    async mentionThatAdviceIsOnGoing(advice: Advice): Promise<void> {
+        if (this.config.whozwho.disabled) {
+            return;
+        }
 
-  async mentionThatAdviceIsOnGoing(advice: Advice): Promise<void> {
-    if (this.config.whozwho.disabled) {
-      return;
+        try {
+            const mention = {
+                status: AdviceStatus.ONGOING,
+            };
+            await axios.put(
+                `${this.config.whozwho.serverUrl}/advices/${advice.id}`,
+                mention,
+                this.options
+            );
+        } catch (e) {
+            this.logError('pb with mentionThatAdviceIsOnGoing', e);
+        }
     }
 
-    try {
-      const mention = {
-        status: AdviceStatus.ONGOING,
-      };
-      await axios.put(
-        `${this.config.whozwho.serverUrl}/advices/${advice.id}`,
-        mention,
-        this.options,
-      );
-    } catch (e) {
-      console.error('[whozwho] pb with advice on going', e);
-    }
-  }
+    async postAdvice(adviceType: AdviceType): Promise<Advice | null> {
+        if (this.config.whozwho.disabled) {
+            return null;
+        }
 
-  async postAdvice(adviceType: AdviceType): Promise<Advice | null> {
-    if (this.config.whozwho.disabled) {
-      return null;
-    }
+        try {
+            const advice = {
+                type: adviceType,
+            };
+            await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
+            const adviceResponse = await axios.post(
+                `${this.config.whozwho.serverUrl}/advices`,
+                advice,
+                this.options
+            );
+            return new Advice(adviceResponse.data.advice?.id, adviceResponse.data.advice?.type);
+        } catch (e) {
+            this.logError('pb with postAdvice', e);
+        }
 
-    try {
-      const advice = {
-        type: adviceType,
-      };
-      await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
-      const adviceResponse = await axios.post(
-        `${this.config.whozwho.serverUrl}/advices`,
-        advice,
-        this.options,
-      );
-      return new Advice(adviceResponse.data.advice?.id, adviceResponse.data.advice?.type);
-    } catch (e) {
-      console.error('[whozwho] pb with advice', e);
+        return null;
     }
 
-    return null;
-  }
+    async isPrincipal(): Promise<boolean> {
+        if (this.config.whozwho.disabled) {
+            return true;
+        }
 
-  async isPrincipal(): Promise<boolean> {
-    if (this.config.whozwho.disabled) {
-      return true;
+        try {
+            const principalQuestion = {
+                question: Question.PRINCIPAL,
+            };
+
+            await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
+            const principalResponse = await axios.post(
+                `${this.config.whozwho.serverUrl}/actors`,
+                principalQuestion,
+                this.options
+            );
+            return principalResponse.data.answer === Answer.YES;
+        } catch (e) {
+            this.logError('pb with isPrincipal', e);
+        }
+
+        return false;
     }
 
-    try {
-      const principalQuestion = {
-        question: Question.PRINCIPAL,
-      };
+    async getPrincipalAddress(
+        category: string
+    ): Promise<{actorId: number; actorAddress: string} | undefined> {
+        if (this.config.whozwho.disabled) {
+            return;
+        }
 
-      await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
-      const principalResponse = await axios.post(
-        `${this.config.whozwho.serverUrl}/actors`,
-        principalQuestion,
-        this.options,
-      );
-      return principalResponse.data.answer === Answer.YES;
-    } catch (e) {
-      console.error('[whozwho] pb with principal', e);
+        try {
+            const actorsFilter = `?category=${category}&principal=true`;
+
+            await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
+            const response = await axios.get(
+                `${this.config.whozwho.serverUrl}/actors${actorsFilter}`,
+                this.options
+            );
+
+            const actors: {actorId: number; actorAddress: string}[] = response?.data?.actors ?? [];
+            return actors.length > 0 ? actors[0] : undefined;
+        } catch (e) {
+            this.logError('pb with principalAddress', e);
+        }
     }
 
-    return false;
-  }
+    async getAllAddresses(category: string) {
+        if (this.config.whozwho.disabled) {
+            return {};
+        }
 
-  async getPrincipalAddress(category: string): Promise<{ actorId: number, actorAddress: string, } | undefined> {
-    if (this.config.whozwho.disabled) {
-      return;
+        try {
+            const actorsFilter = `?category=${category}`;
+
+            await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
+            const response = await axios.get(
+                `${this.config.whozwho.serverUrl}/actors${actorsFilter}`,
+                this.options
+            );
+
+            return response.data?.actors ?? [];
+        } catch (e) {
+            this.logError('pb with principalAllAddresses', e);
+        }
+
+        return {};
     }
 
-    try {
-      const actorsFilter = `?category=${category}&principal=true`;
+    private getHi(lastLogs?: string[]) {
+        const hi = {...this.hi};
+        let last100Errors: string[] = [];
+        try {
+            last100Errors = lastLogs ?? [];
+            if (lastLogs && lastLogs.length > 100) {
+                last100Errors = lastLogs.slice(lastLogs.length - 100);
+            }
+        } catch (e) {
+            this.logError('logs issue:', e);
+        }
 
-      await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
-      const response = await axios.get(
-        `${this.config.whozwho.serverUrl}/actors${actorsFilter}`,
-        this.options,
-      );
-
-      const actors: { actorId: number, actorAddress: string, } [] = response?.data?.actors ?? [];
-      return actors.length > 0 ? actors[0] : undefined;
-    } catch (e) {
-      console.error('[whozwho] pb with principal', e);
-    }
-  }
-
-  async getAllAddresses(category: string) {
-    if (this.config.whozwho.disabled) {
-      return {};
+        hi.last100Errors = last100Errors;
+        return hi;
     }
 
-    try {
-      const actorsFilter = `?category=${category}`;
-
-      await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
-      const response = await axios.get(
-        `${this.config.whozwho.serverUrl}/actors${actorsFilter}`,
-        this.options,
-      );
-
-      return response.data?.actors ?? [];
-    } catch (e) {
-      console.error('[whozwho] pb with principal', e);
+    private logError(message: string, error?: unknown): void {
+        let errorMessage = error instanceof Error ? error.message : error;
+        errorMessage = JSON.stringify(errorMessage).substring(0, 199) + '...';
+        console.error(`[whozwho](${this.config.whozwho.serverUrl}) ${message}:`, errorMessage);
     }
-
-    return {};
-  }
-
-  private getHi(lastLogs?: string[]) {
-    const hi = { ...this.hi };
-    let last100Errors: string[] = [];
-    try {
-      last100Errors = lastLogs ?? [];
-      if (lastLogs && lastLogs.length > 100) {
-        last100Errors = lastLogs.slice(lastLogs.length - 100);
-      }
-    } catch (e) {
-      console.error('logs issue:', e);
-    }
-
-    hi.last100Errors = last100Errors as any;
-    return hi;
-  }
 }

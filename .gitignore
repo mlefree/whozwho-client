@@ -1,57 +1,37 @@
-# Dependencies
+
+# Added by mle-best-practices
+.idea/
+.vscode/
+lib-cov/
+coverage/
+.nyc_output/
+bower_components/
+build/
+pids/
 node_modules/
+jspm_packages/
+typings/
+logs/
+.logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# TypeScript
-dist/
-*.tsbuildinfo
-
-# Testing
-coverage/
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# OS
+.yarn-integrity
 .DS_Store
-Thumbs.db
-
-# Environment
-.env
-.env.local
-.env.*.local
-.output.txt
-.outputs.txt
-
-*gitignored*
-
-# Logs
-logs/
-*.log
-
-# Added by mle-best-practices
-.logs/
-pids
 *.pid
 *.seed
 *.pid.lock
-lib-cov/
-.nyc_output/
 .grunt
-bower_components
-build/Release
-jspm_packages/
-typings/
 .npm
 .eslintcache
 *.tgz
-.yarn-integrity
 *-audit.json
-app/
+*private*
+.output.txt
+dist/
+disti/
 .gen/
+.env
+*gitignored*
 *gitignored
