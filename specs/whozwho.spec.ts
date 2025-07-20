@@ -340,4 +340,26 @@ describe('Whozwho', () => {
             expect(mockedAxios.post).not.toHaveBeenCalled();
         });
     });
+
+    describe('getMyAddress', () => {
+        it('should return the myUrl from config', async () => {
+            const result = await whozwho.getMyAddress();
+
+            expect(result).toBe(testConfig.whozwho.myUrl);
+        });
+
+        it('should work with custom URL', async () => {
+            const customUrl = 'http://custom-my-url';
+            const customWhozwho = new Whozwho({
+                whozwho: {
+                    ...testConfig.whozwho,
+                    myUrl: customUrl,
+                },
+            });
+
+            const result = await customWhozwho.getMyAddress();
+
+            expect(result).toBe(customUrl);
+        });
+    });
 });

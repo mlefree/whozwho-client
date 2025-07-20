@@ -174,6 +174,10 @@ export class Whozwho {
         return {};
     }
 
+    async getMyAddress(): Promise<string> {
+        return this.config.whozwho.myUrl;
+    }
+
     private getHi(lastLogs?: string[]) {
         const hi = {...this.hi};
         let last100Errors: string[] = [];
