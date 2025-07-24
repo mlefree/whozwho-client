@@ -323,7 +323,7 @@ describe('Whozwho', () => {
 
             const result = await whozwho.getAllAddresses('test-category');
 
-            expect(result).toEqual({});
+            expect(result).toEqual([]);
         });
 
         it('should return null when client is disabled', async () => {

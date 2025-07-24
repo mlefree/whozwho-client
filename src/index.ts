@@ -1,5 +1,5 @@
-export {Whozwho} from './whozwho';
-export {Advice} from './models/advice';
-export {AdviceType, AdviceStatus} from './enums/advice-types';
-export {Question, Answer} from './enums/question-types';
-export {WhozwhoConfig} from './config';
+export * from './whozwho';
+export * from './models/advice';
+export * from './enums/advice-types';
+export * from './enums/question-types';
+export * from './config';

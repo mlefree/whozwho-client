@@ -4,6 +4,15 @@ import {Advice} from './models/advice';
 import {AdviceStatus, AdviceType} from './enums/advice-types';
 import {Answer, Question} from './enums/question-types';
 
+export interface ActorInfo {
+    actorId?: number;
+    actorAddress?: string;
+    weight?: number;
+    isPrincipal?: boolean;
+    version?: string;
+    last100Errors?: string[];
+}
+
 export class Whozwho {
     private readonly hi: {
         weight: number;
@@ -152,9 +161,9 @@ export class Whozwho {
         }
     }
 
-    async getAllAddresses(category: string) {
+    async getAllAddresses(category: string): Promise<ActorInfo[]> {
         if (this.config.whozwho.disabled) {
-            return {};
+            return [];
         }
 
         try {
@@ -171,7 +180,7 @@ export class Whozwho {
             this.logError('pb with principalAllAddresses', e);
         }
 
-        return {};
+        return [];
     }
 
     async getMyAddress(): Promise<string> {
