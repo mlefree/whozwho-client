@@ -46,13 +46,17 @@ export class Whozwho {
         };
     }
 
-    async getAdvices(): Promise<Advice[]> {
+    async getAdvices(lastLogs?: string[]): Promise<Advice[]> {
         if (this.config.whozwho.disabled) {
             return [];
         }
 
         try {
-            await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
+            await axios.post(
+                this.config.whozwho.serverUrl + '/hi',
+                this.getHi(lastLogs),
+                this.options
+            );
             const adviceResponse = await axios.get(
                 `${this.config.whozwho.serverUrl}/advices`,
                 this.options
@@ -91,7 +95,7 @@ export class Whozwho {
         }
     }
 
-    async postAdvice(adviceType: AdviceType): Promise<Advice | null> {
+    async postAdvice(adviceType: AdviceType, lastLogs?: string[]): Promise<Advice | null> {
         if (this.config.whozwho.disabled) {
             return null;
         }
@@ -100,7 +104,11 @@ export class Whozwho {
             const advice = {
                 type: adviceType,
             };
-            await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
+            await axios.post(
+                this.config.whozwho.serverUrl + '/hi',
+                this.getHi(lastLogs),
+                this.options
+            );
             const adviceResponse = await axios.post(
                 `${this.config.whozwho.serverUrl}/advices`,
                 advice,

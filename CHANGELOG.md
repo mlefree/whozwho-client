@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- add lastLogs to api
+
 ## [1.2.5] - 2025-07-20
 
 ### Changed
@@ -18,8 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Linted and pretty
-
-## [1.2.3] - 2025-05-25
 
 ## [1.2.0] - 2025-05-05
 
