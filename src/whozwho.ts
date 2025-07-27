@@ -196,7 +196,6 @@ export class Whozwho {
     }
 
     private getHi(lastLogs?: string[]) {
-        const hi = {...this.hi};
         let last100Errors: string[] = [];
         try {
             last100Errors = lastLogs ?? [];
@@ -207,8 +206,11 @@ export class Whozwho {
             this.logError('logs issue:', e);
         }
 
-        hi.last100Errors = last100Errors;
-        return hi;
+        if (last100Errors?.length) {
+            this.hi.last100Errors = last100Errors;
+        }
+
+        return {...this.hi};
     }
 
     private logError(message: string, error?: unknown): void {
