@@ -36,6 +36,7 @@ export class Whozwho {
             ...config,
         };
 
+        // TODO: add public setWeight(w: number) method instead of relying on direct hi.weight access
         this.hi = {
             weight: this.config.whozwho.weight,
             alivePeriodInSec: this.config.whozwho.alivePeriodInSec,
