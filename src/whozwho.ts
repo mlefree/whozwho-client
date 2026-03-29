@@ -268,7 +268,9 @@ export class Whozwho {
         return {...this.hi};
     }
 
-    private captureStoreVersions(response: {data?: {storeVersions?: Record<string, number>}}): void {
+    private captureStoreVersions(response: {
+        data?: {storeVersions?: Record<string, number>};
+    }): void {
         if (response?.data?.storeVersions) {
             this._storeVersions = response.data.storeVersions;
         }
