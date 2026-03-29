@@ -7,7 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.2.7] - 2025-07-27
+## [1.2.9] - 2026-03-29
+
+### Added
+
+- add Store API: getStore, putStore methods and StoreData interface
+- add storeVersions tracking from isPrincipal heartbeat
+
+## [1.2.8] - 2025-07-27
 
 ### Changed
 
@@ -128,7 +135,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release 🎉
 
-[Unreleased]: https://github.com/mlefree/whozwho-client/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/mlefree/whozwho-client/compare/v1.2.9...HEAD
+
+[1.2.9]: https://github.com/mlefree/whozwho-client/compare/v1.2.8...v1.2.9
+
+[1.2.8]: https://github.com/mlefree/whozwho-client/compare/v1.2.5...v1.2.8
+
+[1.2.5]: https://github.com/mlefree/whozwho-client/compare/v1.2.0...v1.2.5
 
 [1.2.0]: https://github.com/mlefree/whozwho-client/compare/v1.1.2...v1.2.0
 

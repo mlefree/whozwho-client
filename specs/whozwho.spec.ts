@@ -1,4 +1,4 @@
-import {Advice, AdviceType, Whozwho, WhozwhoConfig} from '../src';
+import {Advice, AdviceType, Whozwho, WhozwhoConfig, StoreData} from '../src';
 import axios from 'axios';
 
 jest.mock('axios');
@@ -23,6 +23,7 @@ describe('Whozwho', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
+        jest.spyOn(console, 'error').mockImplementation(() => {});
         whozwho = new Whozwho(testConfig);
     });
 
@@ -360,6 +361,110 @@ describe('Whozwho', () => {
             const result = await customWhozwho.getMyAddress();
 
             expect(result).toBe(customUrl);
+        });
+    });
+
+    describe('getStore', () => {
+        it('should return store data when found', async () => {
+            const mockStore: StoreData = {version: 3, data: {goals: [{id: 'GOAL-01'}]}};
+            mockedAxios.get.mockResolvedValueOnce({data: mockStore});
+
+            const result = await whozwho.getStore('goals');
+
+            expect(result).toEqual(mockStore);
+            expect(mockedAxios.get).toHaveBeenCalledWith(
+                expect.stringContaining('/store/goals'),
+                expect.any(Object)
+            );
+        });
+
+        it('should return null when store not found (404)', async () => {
+            mockedAxios.get.mockRejectedValueOnce({status: 404});
+
+            const result = await whozwho.getStore('goals');
+
+            expect(result).toBeNull();
+        });
+
+        it('should return null on error', async () => {
+            mockedAxios.get.mockRejectedValueOnce(new Error('Network error'));
+
+            const result = await whozwho.getStore('goals');
+
+            expect(result).toBeNull();
+        });
+
+        it('should return null when disabled', async () => {
+            const disabledWhozwho = new Whozwho({
+                whozwho: {...testConfig.whozwho, disabled: true},
+            });
+
+            const result = await disabledWhozwho.getStore('goals');
+
+            expect(result).toBeNull();
+            expect(mockedAxios.get).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('putStore', () => {
+        it('should write store data and return version', async () => {
+            mockedAxios.put.mockResolvedValueOnce({data: {version: 5}});
+
+            const result = await whozwho.putStore('goals', {goals: [{id: 'GOAL-01'}]});
+
+            expect(result).toEqual({version: 5});
+            expect(mockedAxios.put).toHaveBeenCalledWith(
+                expect.stringContaining('/store/goals'),
+                {data: {goals: [{id: 'GOAL-01'}]}},
+                expect.any(Object)
+            );
+        });
+
+        it('should return null on error', async () => {
+            mockedAxios.put.mockRejectedValueOnce(new Error('Network error'));
+
+            const result = await whozwho.putStore('goals', {});
+
+            expect(result).toBeNull();
+        });
+
+        it('should return null when disabled', async () => {
+            const disabledWhozwho = new Whozwho({
+                whozwho: {...testConfig.whozwho, disabled: true},
+            });
+
+            const result = await disabledWhozwho.putStore('goals', {});
+
+            expect(result).toBeNull();
+            expect(mockedAxios.put).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('storeVersions', () => {
+        it('should start empty', () => {
+            expect(whozwho.storeVersions).toEqual({});
+        });
+
+        it('should capture storeVersions from isPrincipal heartbeat', async () => {
+            mockedAxios.post
+                .mockResolvedValueOnce({data: {storeVersions: {goals: 3, tasks: 1}}})
+                .mockResolvedValueOnce({data: {answer: 'yes'}});
+
+            await whozwho.isPrincipal();
+
+            expect(whozwho.storeVersions).toEqual({goals: 3, tasks: 1});
+        });
+
+        it('should return a copy (not a reference)', async () => {
+            mockedAxios.post
+                .mockResolvedValueOnce({data: {storeVersions: {goals: 1}}})
+                .mockResolvedValueOnce({data: {answer: 'yes'}});
+
+            await whozwho.isPrincipal();
+
+            const versions = whozwho.storeVersions;
+            versions.goals = 999;
+            expect(whozwho.storeVersions.goals).toBe(1);
         });
     });
 });

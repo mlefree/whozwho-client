@@ -13,6 +13,11 @@ export interface ActorInfo {
     last100Errors?: string[];
 }
 
+export interface StoreData {
+    version: number;
+    data: unknown;
+}
+
 export class Whozwho {
     private readonly hi: {
         weight: number;
@@ -23,6 +28,7 @@ export class Whozwho {
 
     private readonly options: AxiosRequestConfig;
     private readonly config: WhozwhoConfig;
+    private _storeVersions: Record<string, number> = {};
 
     constructor(config: Partial<WhozwhoConfig> = {}) {
         this.config = {
@@ -132,7 +138,13 @@ export class Whozwho {
                 question: Question.PRINCIPAL,
             };
 
-            await axios.post(this.config.whozwho.serverUrl + '/hi', this.getHi(), this.options);
+            const hiResponse = await axios.post(
+                this.config.whozwho.serverUrl + '/hi',
+                this.getHi(),
+                this.options
+            );
+            this.captureStoreVersions(hiResponse);
+
             const principalResponse = await axios.post(
                 `${this.config.whozwho.serverUrl}/actors`,
                 principalQuestion,
@@ -191,6 +203,49 @@ export class Whozwho {
         return [];
     }
 
+    get storeVersions(): Record<string, number> {
+        return {...this._storeVersions};
+    }
+
+    async getStore(namespace: string): Promise<StoreData | null> {
+        if (this.config.whozwho.disabled) {
+            return null;
+        }
+
+        try {
+            const response = await axios.get(
+                `${this.config.whozwho.serverUrl}/store/${namespace}`,
+                this.options
+            );
+            return response.data ?? null;
+        } catch (e: unknown) {
+            if ((e as AxiosError)?.status !== 404) {
+                this.logError('pb with getStore', e);
+            }
+        }
+
+        return null;
+    }
+
+    async putStore(namespace: string, data: unknown): Promise<{version: number} | null> {
+        if (this.config.whozwho.disabled) {
+            return null;
+        }
+
+        try {
+            const response = await axios.put(
+                `${this.config.whozwho.serverUrl}/store/${namespace}`,
+                {data},
+                this.options
+            );
+            return response.data ?? null;
+        } catch (e) {
+            this.logError('pb with putStore', e);
+        }
+
+        return null;
+    }
+
     async getMyAddress(): Promise<string> {
         return this.config.whozwho.myUrl;
     }
@@ -211,6 +266,12 @@ export class Whozwho {
         }
 
         return {...this.hi};
+    }
+
+    private captureStoreVersions(response: {data?: {storeVersions?: Record<string, number>}}): void {
+        if (response?.data?.storeVersions) {
+            this._storeVersions = response.data.storeVersions;
+        }
     }
 
     private logError(message: string, error?: unknown): void {
